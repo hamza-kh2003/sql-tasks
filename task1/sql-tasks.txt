@@ -1,0 +1,205 @@
+ex1:
+
+task1:
+
+CREATE TABLE Authors (
+    author_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+
+CREATE TABLE Books (
+    book_id INT PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    author_id INT,
+   FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+);
+
+task2:
+
+img in the repo
+
+
+task3:
+
+Primary Key:
+
+1-Uniquely identifies each row in a table.
+
+2-Cannot contain NULL values.
+
+3-Only one primary key is allowed per table.
+
+Unique Constraint:
+
+1-Ensures that values in a column (or combination of columns) are unique.
+
+2-Can contain one NULL value (depending on the database).
+
+3-A table can have multiple unique constraints.
+
+note: Both can exist in one table: You can have one primary key and several unique constraints on other columns.
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ex2:
+
+task1:
+
+Step 1: First Normal Form (1NF)
+
+Requirement: Each cell must contain a single atomic value (no lists or multiple values).
+
+Observation: Assuming each cell contains one value, the table is in 1NF.
+
+
+
+Step 2: Second Normal Form (2NF)
+
+Requirement: Every non-key column must depend on the whole primary key, not just part of it.
+
+Primary Key (composite): (order_id, product_name)
+
+Problem: customer_name depends only on order_id → partial dependency.
+
+Solution: Split the table into two tables:
+
+Orders Table:
+
+order_id	customer_name
+
+Order_Products Table:
+
+order_id	product_name	product_price
+
+
+
+Third Normal Form (3NF)
+
+Requirement: No non-key column should depend on another non-key column (transitive dependency).
+
+Observation: In Order_Products, all columns depend directly on the primary key (order_id, product_name) → ✅ Table is in 3NF.
+
+
+
+task2:
+
+1. Partial Dependency
+
+Definition: A column depends on part of a composite primary key, not the whole key.
+
+example:Primary Key: (order_id, product_name)
+
+customer_name depends only on order_id, not on product_name.
+
+This is a partial dependency.
+
+
+
+2. Transitive Dependency
+
+Definition: A column depends on another non-key column, instead of depending directly on the
+
+example : order_id	product_name	product_price	category	category_tax
+
+Primary Key: (order_id, product_name)
+
+category_tax depends on category, not directly on (order_id, product_name).
+
+This is a transitive dependency.
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ex3:
+
+
+1) INSERT INTO students (student_id, student_name, birth_year, email)
+VALUES 
+(1, 'Ali', 2001, 'ali@mail.com'),
+(2, 'Sara', 2003, 'sara@mail.com'),
+(3, 'Mohamed', 1999, 'mohamed@mail.com');
+
+
+2) SELECT *
+FROM students
+WHERE birth_year > 2000
+ORDER BY student_name;
+
+
+3) UPDATE students
+SET email = 'newemail@mail.com'
+WHERE student_id = 2;
+
+4) DELETE FROM students
+WHERE student_id = 3;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ex4:
+
+1) SELECT city, COUNT(*) AS user_count
+FROM users
+GROUP BY city
+HAVING COUNT(*) > 5;
+
+
+2) SELECT u.user_id, u.user_name
+FROM users u
+LEFT JOIN orders o ON u.user_id = o.user_id
+WHERE o.order_id IS NULL;
+
+
+3)  SELECT u.user_id, u.user_name, AVG(o.order_amount) AS avg_order
+FROM users u
+JOIN orders o ON u.user_id = o.user_id
+GROUP BY u.user_id, u.user_name;
+
+
+4) SELECT u.user_id, u.user_name, SUM(o.order_amount) AS total_spent
+FROM users u
+JOIN orders o ON u.user_id = o.user_id
+GROUP BY u.user_id, u.user_name
+HAVING SUM(o.order_amount) > (
+    SELECT AVG(total_user) 
+    FROM (
+        SELECT SUM(order_amount) AS total_user
+        FROM orders
+        GROUP BY user_id
+    ) AS user_totals
+);
+
+5) SELECT email
+FROM newsletter_subscribers
+
+UNION
+
+SELECT email
+FROM users;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ex5:
+
+task 1)
+
+Data:
+Raw facts or figures that have not been processed and have no specific meaning by themselves.
+
+Information:
+Processed or organized data that is meaningful and useful for decision-making.
+
+Database:
+A structured collection of data stored in a way that allows easy access, management, and retrieval.
+
+DBMS (Database Management System):
+Software that enables users to create, manage, and interact with databases efficiently.
+
+RDBMS (Relational Database Management System):
+A type of DBMS that stores data in tables and establishes relationships between tables using keys.
+
+task2)
+
+Real-Life System: Hospital
+
+Hospitals use databases to manage large amounts of patient information. Each patient has a record containing personal details, medical history, test results, and prescribed medications. Doctors and nurses can quickly retrieve and update patient records as needed, ensuring accurate treatment. The database also tracks appointments, billing, and inventory of medical supplies. This system helps the hospital operate efficiently and improves patient care.
